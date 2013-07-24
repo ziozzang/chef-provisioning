@@ -94,8 +94,13 @@ EOF
 
 chmod +x /root/reg-client.py
 CMD="python /root/reg-client.py > /var/log/reg-client.log 2> /var/log/reg-client.err &"
-echo "${CMD}" >> /etc/rc.local
-{$CMD}
+
+${CMD}
+CNT=`grep "chef-client" /etc/rc.local | wc -l`
+if [[ "$CNT" -eq 0 ]]; then
+  sed -i -e "s,^\(exit.*\),#\1,g" /etc/rc.local
+  echo "${CMD}" >> /etc/rc.local
+fi
 
 
 

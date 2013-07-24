@@ -2,8 +2,8 @@
 # Chef-client very init provisioning script.
 # - code by Jioh L. Jung (ziozzang@gmail.com)
 
-#ERVER_IP="192.168.0.175"
-if [[ "$1" -eq "" ]]; then
+#SERVER_IP="192.168.0.175"
+if [[ "$1" == "" ]]; then
   echo "SERVER_IP is empty!"
   echo "USAGE: $0 [SERVER_IP]"
   echo "Ex) $0 1.2.3.4"
@@ -31,4 +31,8 @@ EOF
 
 CMD="chef-client -N ${CURRENT_IP} -d"
 ${CMD}
-echo "${CMD}" >> /etc/rc.local
+CNT=`grep "chef-client" /etc/rc.local | wc -l`
+if [[ "$CNT" -eq 0 ]]; then
+  sed -i -e "s,^\(exit.*\),#\1,g" /etc/rc.local
+  echo "${CMD}" >> /etc/rc.local
+fi
