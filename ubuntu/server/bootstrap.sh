@@ -7,6 +7,9 @@ if [ `whoami` != root ]; then
   exit 1
 fi
 
+apt-get install -fy python-pip
+pip install flask
+
 HOSTNAME=`hostname -s`
 CURRENT_IP=`ifconfig eth0 | grep -m 1 'inet addr:' | cut -d: -f2 | awk '{print $1}'`
 
@@ -49,7 +52,7 @@ cat << EOF > /root/reg-client.py
 #
 # Chef Provisioning API Script - As Master
 #
-#  - Script by Jioh L. Jung (zio.zzang@kt.com)
+#  - Script by Jioh L. Jung (ziozzang@gmail.com)
 #
 #################################################################
 # Configuration
