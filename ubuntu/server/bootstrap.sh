@@ -7,7 +7,10 @@ if [ `whoami` != root ]; then
   exit 1
 fi
 
-apt-get install -fy python-pip
+CHEF_BIN=${CHEF_BIN:-"chef-server_11.0.12-1.ubuntu.12.04_amd64.deb"}
+
+apt-get update
+apt-get install -fy python-pip ruby
 pip install flask
 
 HOSTNAME=`hostname -s`
@@ -19,8 +22,8 @@ mkdir chef-server
 cd chef-server/
 
 # Install Server.
-wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chef-server_11.0.4-1.ubuntu.12.04_amd64.deb
-dpkg -i chef-server_11.0.4-1.ubuntu.12.04_amd64.deb
+wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/${CHEF_BIN}
+dpkg -i ${CHEF_BIN}
 
 # Fix FQDN Issue.
 # - which is used when sync bookshelf.
